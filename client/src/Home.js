@@ -8,13 +8,6 @@ export default function Home() {
   });
   const [dogs, setDogs] = useState([])
 
-  useEffect(
-    () => {
-        
-    },
-    []
-  )
-
   useEffect(() => {
     getGreeting()
       .then(setGreeting)

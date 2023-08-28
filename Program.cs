@@ -23,6 +23,25 @@ List<Dog> dogs = new List<Dog>
     }
 };
 
+List<City> cities = new List<City>
+{
+    new City()
+    {
+        Id = 1,
+        Name = "Clarkson"
+    },
+    new City()
+    {
+        Id = 2,
+        Name = "Bowling Green"
+    },
+    new City()
+    {
+        Id = 3,
+        Name = "Nashville"
+    }
+};
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.Configure<JsonOptions>(options =>
@@ -54,6 +73,27 @@ app.MapGet("/api/hello", () =>
 app.MapGet("/api/dogs", () => 
 {
     return dogs;
+});
+
+app.MapGet("/api/cities", () => 
+{
+    return cities;
+});
+
+app.MapGet("/api/cities/{id}", (int id) => {
+    City foundCity = cities.FirstOrDefault(fc => fc.Id == id);
+    if (foundCity == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(foundCity);
+});
+
+app.MapPost("/api/cities", (City city) => 
+{
+    city.Id = cities.Count > 0 ? cities.Max(c => c.Id) + 1 : 1;
+    cities.Add(city);
+    return city;
 });
 
 app.Run();
