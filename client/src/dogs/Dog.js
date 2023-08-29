@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react"
 import { getCity, getWalker } from "../apiManager"
+import { Link } from "react-router-dom"
 
 export const Dog = ({id, name, walkerId, cityId}) => 
 {
@@ -19,7 +20,7 @@ export const Dog = ({id, name, walkerId, cityId}) =>
 
     return <section className="dog" key={`dog--${id}`}>
         <div>
-            <p>Dog: {name}</p>
+            Dog: <Link to={`/dogs/${id}`}>{name}</Link>
             <p>Walker: {walker.name}</p>
             <p>City Name: {city.name}</p>
         </div>

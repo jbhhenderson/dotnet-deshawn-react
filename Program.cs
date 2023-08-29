@@ -150,6 +150,17 @@ app.MapGet("/api/dogs", () =>
     return dogs;
 });
 
+app.MapGet("/api/dogs/{id}", (int id) => 
+{
+    Dog foundDog = dogs.FirstOrDefault(d => d.Id == id);
+
+    if(foundDog == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(foundDog);
+});
+
 app.MapPost("/api/dogs", (Dog newDog) => 
 {
     newDog.Id = dogs.Count > 0 ? dogs.Max(d => d.Id) + 1 : 1;

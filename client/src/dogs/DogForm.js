@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 export const DogForm = () => {
     const [cities, setCities] = useState([]);
     const [walkers, setWalkers] = useState([]);
-    const [selectedCity, setSelectedCity] = useState({});
-    const [selectedWalker, setSelectedWalker] = useState({});
+    const [selectedCityId, setSelectedCityId] = useState(0);
+    const [selectedWalkerId, setSelectedWalkerId] = useState(0);
     const [dogName, setDogName] = useState("");
 
     useEffect(() => {
@@ -23,11 +23,11 @@ export const DogForm = () => {
     const navigate = useNavigate();
 
     const handleCitySelect = (evt) => {
-        setSelectedCity(parseInt(evt.target.value));
+        setSelectedCityId(parseInt(evt.target.value));
     };
 
     const handleWalkerSelect = (evt) => {
-        setSelectedWalker(parseInt(evt.target.value));
+        setSelectedWalkerId(parseInt(evt.target.value));
     };
 
     const handleSubmitButton = (evt) => {
@@ -35,8 +35,8 @@ export const DogForm = () => {
         
         const dogToSendToAPI = {
             name: dogName,
-            cityId: selectedCity,
-            walkerId: selectedWalker,
+            cityId: selectedCityId,
+            walkerId: selectedWalkerId,
         }
 
         addDog(dogToSendToAPI)
