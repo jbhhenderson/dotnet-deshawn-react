@@ -7,19 +7,29 @@ List<Dog> dogs = new List<Dog>
     {
         Id = 1,
         Name = "Coco",
-        CityId = 1
+        CityId = 1,
+        WalkerId = 2
     },
     new Dog()
     {
         Id = 2,
         Name = "Naru",
-        CityId = 1
+        CityId = 1,
+        WalkerId = 1
     },
     new Dog()
     {
         Id = 3,
         Name = "Piper",
-        CityId = 2
+        CityId = 2,
+        WalkerId = 1
+    },
+    new Dog()
+    {
+        Id = 4,
+        Name = "Remy",
+        CityId = 3,
+        WalkerId = 3
     }
 };
 
@@ -39,6 +49,71 @@ List<City> cities = new List<City>
     {
         Id = 3,
         Name = "Nashville"
+    }
+};
+
+List<Walker> walkers = new List<Walker>
+{
+    new Walker()
+    {
+        Id = 1,
+        Name = "Jackson"
+    },
+    new Walker()
+    {
+        Id = 2,
+        Name = "JoNell"
+    },
+    new Walker()
+    {
+        Id = 3,
+        Name = "Alex"
+    }
+};
+
+List<WalkerCity> walkerCities = new List<WalkerCity>
+{
+    new WalkerCity()
+    {
+        Id = 1,
+        WalkerId = 1,
+        CityId = 1
+    },
+    new WalkerCity()
+    {
+        Id = 2,
+        WalkerId = 1,
+        CityId = 2
+    },
+    new WalkerCity()
+    {
+        Id = 3,
+        WalkerId = 1,
+        CityId = 3
+    },
+    new WalkerCity()
+    {
+        Id = 4,
+        WalkerId = 2,
+        CityId = 1
+    },
+    new WalkerCity()
+    {
+        Id = 5,
+        WalkerId = 2,
+        CityId = 2
+    },
+    new WalkerCity()
+    {
+        Id = 6,
+        WalkerId = 3,
+        CityId = 2
+    },
+    new WalkerCity()
+    {
+        Id = 7,
+        WalkerId = 3,
+        CityId = 3
     }
 };
 
@@ -80,7 +155,8 @@ app.MapGet("/api/cities", () =>
     return cities;
 });
 
-app.MapGet("/api/cities/{id}", (int id) => {
+app.MapGet("/api/cities/{id}", (int id) => 
+{
     City foundCity = cities.FirstOrDefault(fc => fc.Id == id);
     if (foundCity == null)
     {
@@ -96,4 +172,42 @@ app.MapPost("/api/cities", (City city) =>
     return city;
 });
 
+app.MapGet("/api/walkers", () => 
+{
+    return walkers;
+});
+
+app.MapGet("/api/walkers/{cityName}", (string cityName) => 
+{
+    if (cityName != "0") 
+    {
+        City foundCity = cities.FirstOrDefault(c => c.Name == cityName);
+        List<WalkerCity> filteredWalkerCities = walkerCities.Where(wc => wc.CityId == foundCity.Id).ToList();
+        List<Walker> filteredWalkers = new List<Walker>();
+
+        foreach (WalkerCity fwc in filteredWalkerCities)
+        {
+            Walker foundWalker = walkers.FirstOrDefault(w => w.Id == fwc.WalkerId);
+            filteredWalkers.Add(foundWalker);
+        }
+
+        return Results.Ok(filteredWalkers);
+    }
+    else 
+    {
+        return Results.Ok(walkers);
+    }
+});
+
+app.MapGet("/api/walker/{id}", (int id) => 
+{
+    Walker foundWalker = walkers.FirstOrDefault(fw => fw.Id == id);
+    if (foundWalker == null)
+    {
+        return Results.NotFound();
+    }
+    return Results.Ok(foundWalker);
+});
+
 app.Run();
+

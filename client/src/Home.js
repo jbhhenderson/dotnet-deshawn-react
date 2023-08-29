@@ -22,7 +22,7 @@ export default function Home() {
   }, []);
 
   return <>
-    <p>{greeting.message}</p>;
+    <p>{greeting.message}</p>
     <section className="dogs">
         {
             dogs.map(dog => <Dog key={`dog--${dog.id}`}

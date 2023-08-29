@@ -2,7 +2,7 @@ export const City = ({id, name}) =>
 {
     return <section className="city" key={`city--${id}`}>
         <div>
-            <p>Name: {name}</p>
+            <p>City: {name}</p>
         </div>
     </section>
 }
