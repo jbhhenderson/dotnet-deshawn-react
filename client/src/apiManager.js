@@ -8,6 +8,11 @@ export const getDogs = async () => {
   return res.json();
 };
 
+export const getDog = async (id) => {
+  const res = await fetch(`/api/dogs/${id}`);
+  return res.json();
+}
+
 export const addDog = async (newDog) => {
   await fetch("/api/dogs", {
     method: "POST",
