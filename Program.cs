@@ -150,6 +150,13 @@ app.MapGet("/api/dogs", () =>
     return dogs;
 });
 
+app.MapPost("/api/dogs", (Dog newDog) => 
+{
+    newDog.Id = dogs.Count > 0 ? dogs.Max(d => d.Id) + 1 : 1;
+    dogs.Add(newDog);
+    return newDog;
+});
+
 app.MapGet("/api/cities", () => 
 {
     return cities;
@@ -204,7 +211,7 @@ app.MapGet("/api/walker/{id}", (int id) =>
     Walker foundWalker = walkers.FirstOrDefault(fw => fw.Id == id);
     if (foundWalker == null)
     {
-        return Results.NotFound();
+        return Results.Ok("Unassigned");
     }
     return Results.Ok(foundWalker);
 });

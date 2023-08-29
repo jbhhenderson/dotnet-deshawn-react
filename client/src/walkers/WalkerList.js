@@ -8,7 +8,7 @@ export const WalkerList = () =>
     const [cities, setCities] = useState([]);
     const [filteredWalkers, setFilteredWalkers] = useState([]);
     const [cityIsSelected, setIsCitySelected] = useState(false);
-    const [selectedCity, setSelectedCity] = useState("")
+    const [selectedCity, setSelectedCity] = useState("");
 
     //api and api manager have fetches set up for filtering
     //need to create drop down and apply logic to determine if a city has been selected or not
