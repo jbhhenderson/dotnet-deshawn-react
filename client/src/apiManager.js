@@ -27,3 +27,18 @@ export const addCity = async (city) => {
     body: JSON.stringify(city)
   });
 }
+
+export const getWalkers = async () => {
+  const res = await fetch(`/api/walkers`);
+  return res.json();
+}
+
+export const getWalker = async (id) => {
+  const res = await fetch(`/api/walker/${id}`);
+  return res.json();
+}
+
+export const getWalkersByCity = async (cityName) => {
+  const res = await fetch(`/api/walkers/${cityName}`);
+  return res.json();
+}
