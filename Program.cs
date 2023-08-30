@@ -1,5 +1,6 @@
 using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Http.Json;
+using Microsoft.AspNetCore.Mvc;
 
 List<Dog> dogs = new List<Dog>
 {
@@ -119,11 +120,6 @@ List<WalkerCity> walkerCities = new List<WalkerCity>
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.Configure<JsonOptions>(options =>
-{
-    options.SerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
-});
-
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -225,6 +221,71 @@ app.MapGet("/api/walker/{id}", (int id) =>
         return Results.Ok("Unassigned");
     }
     return Results.Ok(foundWalker);
+});
+
+app.MapGet("/api/walkerCities/{walkerId}", (int walkerId) =>
+{
+    List<WalkerCity> foundWalkerCities = walkerCities.Where(wc => wc.WalkerId == walkerId).ToList();
+
+    List<City> foundCities = new List<City>();
+
+    foreach(WalkerCity fwc in foundWalkerCities)
+    {
+        foundCities.Add(cities.FirstOrDefault(c => c.Id == fwc.CityId));
+    }
+
+    return Results.Ok(foundCities);
+});
+
+// app.MapGet("/api/{walkerId}/availableDogs/{availableCities}", (int walkerId, [FromURI] List<City> availableCities) =>
+// {
+//     List<Dog> foundDogs = new List<Dog>();
+
+//     foreach(City city in availableCities)
+//     {
+//         foreach(Dog dog in dogs)
+//         {
+//             if (dog.CityId == city.Id)
+//             {
+//                 foundDogs.Add(dog);
+//             }
+//         }
+//     }
+
+//     return Results.Ok(foundDogs);
+// });
+
+// app.MapGet("/api/{walkerId}/availableDogs/{cityId}", (int walkerId, int cityId) => 
+// {
+//     List<Dog> foundDogs = dogs.Where(d => d.CityId == cityId).ToList();
+
+//     foreach (Dog dog in foundDogs)
+//     {
+//         if (dog.WalkerId == walkerId)
+//         {
+//             foundDogs.Remove(dog);
+//         }
+//     }
+
+//     return Results.Ok(foundDogs);
+// });
+
+app.MapGet("/api/availableDogs/{cityId}", (int cityId) => 
+{
+    List<Dog> foundDogs = dogs.Where(d => d.CityId == cityId).ToList();
+
+    return Results.Ok(foundDogs);
+});
+
+app.MapPut("/api/updateDog/{dogId}", (int dogId, Dog dog) =>
+{
+    Dog dogToUpdate = dogs.FirstOrDefault(d => d.Id == dogId);
+
+    int dogIndex = dogs.IndexOf(dogToUpdate);
+
+    dogs[dogIndex] = dog;
+
+    return Results.Ok();
 });
 
 app.Run();

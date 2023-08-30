@@ -57,3 +57,34 @@ export const getWalkersByCity = async (cityName) => {
   const res = await fetch(`/api/walkers/${cityName}`);
   return res.json();
 };
+
+export const getCitiesByWalkerId = async (walkerId) => {
+  const res = await fetch(`/api/walkerCities/${walkerId}`);
+  return res.json();
+}
+
+// export const getAvailableDogs = async (walkerId, availableCities) => {
+//   const res = await fetch(`/api/${walkerId}/availableDogs`, {
+//     method: "GET",
+//     headers: {
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(availableCities)
+//   });
+//   return res.json();
+// }
+
+export const getAvailableDogs = async (cityId) => {
+  const res = await fetch(`/api/availableDogs/${cityId}`)
+  return res.json();
+}
+
+export const updateDog = async (dog) => {
+  await fetch(`/api/updateDog/${dog.id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(dog)
+  });
+}
