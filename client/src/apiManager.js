@@ -84,6 +84,12 @@ export const removeDog = async (dogId) => {
   })
 }
 
+export const removeWalker = async (walkerId) => {
+  await fetch(`/api/removeWalker/${walkerId}`, {
+    method: "DELETE"
+  })
+}
+
 export const updateWalker = async (walker) => {
   await fetch(`/api/updateWalker/${walker.Id}`, {
     method: "PUT",

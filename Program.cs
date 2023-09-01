@@ -272,6 +272,20 @@ app.MapDelete("/api/removeDog/{dogId}", (int dogId) =>
     dogs.Remove(dog);
 });
 
+app.MapDelete("/api/removeWalker/{walkerId}", (int walkerId) => 
+{
+    foreach (Dog dog in dogs) 
+    {
+        if (dog.WalkerId == walkerId)
+        {
+            dog.WalkerId = null;
+        }
+    }
+
+    Walker walker = walkers.FirstOrDefault(w => w.Id == walkerId);
+    walkers.Remove(walker);
+});
+
 app.MapPut("/api/updateWalker/{walkerId}", (Walker walker) => 
 {
     Walker walkerToUpdate = walkers.FirstOrDefault(w => w.Id == walker.Id);
