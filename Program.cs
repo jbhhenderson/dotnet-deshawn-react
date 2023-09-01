@@ -266,6 +266,12 @@ app.MapPut("/api/updateDog/{dogId}", (int dogId, Dog dog) =>
     return Results.Ok();
 });
 
+app.MapDelete("/api/removeDog/{dogId}", (int dogId) =>
+{
+    Dog dog = dogs.FirstOrDefault(d => d.Id == dogId);
+    dogs.Remove(dog);
+});
+
 app.MapPut("/api/updateWalker/{walkerId}", (Walker walker) => 
 {
     Walker walkerToUpdate = walkers.FirstOrDefault(w => w.Id == walker.Id);

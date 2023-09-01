@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getCity, getWalker } from "../apiManager"
+import { getCity, getWalker, removeDog } from "../apiManager"
 import { Link } from "react-router-dom"
 
 export const Dog = ({id, name, walkerId, cityId}) => 
