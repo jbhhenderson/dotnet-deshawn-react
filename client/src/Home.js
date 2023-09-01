@@ -1,4 +1,4 @@
-import { getDogs, getGreeting } from "./apiManager";
+import { getDogs, getGreeting, removeDog } from "./apiManager";
 import { useEffect, useState } from "react";
 import {useNavigate} from "react-router-dom"
 import { Dog } from "./dogs/Dog";
@@ -29,17 +29,32 @@ export default function Home() {
     navigate("/addDog")
   }
 
+  const handleRemoveButton = (evt, dogId) => {
+    evt.preventDefault()
+    removeDog(dogId)
+    .then(
+      getDogs()
+      .then((data) => {
+        setDogs(data)
+      })
+    )
+}
+
   return <>
     <p>{greeting.message}</p>
     <button onClick={handleAddButton}>Add Dog</button>
     <section className="dogs">
         {
-            dogs.map(dog => <Dog key={`dog--${dog.id}`}
+            dogs.map((dog) => <>
+            <Dog key={`dog--${dog.id}`}
                 id = {dog.id}
                 name = {dog.name}
                 walkerId = {dog.walkerId}
                 cityId = {dog.cityId}
-                 />)
+                 />
+            <button onClick={(evt) => handleRemoveButton(evt, dog.id)}>Remove</button>
+            </>
+        )
         }
     </section>
   </>
