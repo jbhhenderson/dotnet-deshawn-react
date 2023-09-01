@@ -34,23 +34,8 @@ export const WalkerDog = () => {
     }, [])
 
     useEffect(() => {
-        // let foundDogs = [];
-        // availableCities.map(city=> {
-        //     getAvailableDogs(parseInt(city.id))
-        //     .then((data) => {
-        //         for (let object in data) {
-        //             if (object.walkerId != {walkerId}) {
-        //                 foundDogs.push(object)
-        //             }
-        //         }
-        //     })
-
-        // })
-
-        // setAvailableDogs(foundDogs)
-
         setAvailableDogs(filterDogs())
-
+        
     }, [availableCities, dogs, walker])
 
     const filterDogs = () => {
