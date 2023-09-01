@@ -63,17 +63,6 @@ export const getCitiesByWalkerId = async (walkerId) => {
   return res.json();
 }
 
-// export const getAvailableDogs = async (walkerId, availableCities) => {
-//   const res = await fetch(`/api/${walkerId}/availableDogs`, {
-//     method: "GET",
-//     headers: {
-//       "Content-Type": "application/json",
-//     },
-//     body: JSON.stringify(availableCities)
-//   });
-//   return res.json();
-// }
-
 export const getAvailableDogs = async (cityId) => {
   const res = await fetch(`/api/availableDogs/${cityId}`)
   return res.json();
@@ -86,5 +75,15 @@ export const updateDog = async (dog) => {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(dog)
+  });
+}
+
+export const updateWalker = async (walker) => {
+  await fetch(`/api/updateWalker/${walker.Id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(walker)
   });
 }

@@ -50,6 +50,11 @@ List<City> cities = new List<City>
     {
         Id = 3,
         Name = "Nashville"
+    },
+    new City()
+    {
+        Id = 4,
+        Name = "Owensboro"
     }
 };
 
@@ -115,6 +120,12 @@ List<WalkerCity> walkerCities = new List<WalkerCity>
         Id = 7,
         WalkerId = 3,
         CityId = 3
+    },
+    new WalkerCity()
+    {
+        Id = 8,
+        WalkerId = 3,
+        CityId = 4
     }
 };
 
@@ -237,39 +248,6 @@ app.MapGet("/api/walkerCities/{walkerId}", (int walkerId) =>
     return Results.Ok(foundCities);
 });
 
-// app.MapGet("/api/{walkerId}/availableDogs/{availableCities}", (int walkerId, [FromURI] List<City> availableCities) =>
-// {
-//     List<Dog> foundDogs = new List<Dog>();
-
-//     foreach(City city in availableCities)
-//     {
-//         foreach(Dog dog in dogs)
-//         {
-//             if (dog.CityId == city.Id)
-//             {
-//                 foundDogs.Add(dog);
-//             }
-//         }
-//     }
-
-//     return Results.Ok(foundDogs);
-// });
-
-// app.MapGet("/api/{walkerId}/availableDogs/{cityId}", (int walkerId, int cityId) => 
-// {
-//     List<Dog> foundDogs = dogs.Where(d => d.CityId == cityId).ToList();
-
-//     foreach (Dog dog in foundDogs)
-//     {
-//         if (dog.WalkerId == walkerId)
-//         {
-//             foundDogs.Remove(dog);
-//         }
-//     }
-
-//     return Results.Ok(foundDogs);
-// });
-
 app.MapGet("/api/availableDogs/{cityId}", (int cityId) => 
 {
     List<Dog> foundDogs = dogs.Where(d => d.CityId == cityId).ToList();
@@ -286,6 +264,27 @@ app.MapPut("/api/updateDog/{dogId}", (int dogId, Dog dog) =>
     dogs[dogIndex] = dog;
 
     return Results.Ok();
+});
+
+app.MapPut("/api/updateWalker/{walkerId}", (Walker walker) => 
+{
+    Walker walkerToUpdate = walkers.FirstOrDefault(w => w.Id == walker.Id);
+
+    int walkerIndex = walkers.IndexOf(walkerToUpdate);
+    walkers[walkerIndex].Name = walker.Name;
+
+    walkerCities = walkerCities.Where(wc => wc.WalkerId != walker.Id).ToList();
+
+    foreach (City city in walker.Cities)
+    {
+        WalkerCity newWC = new WalkerCity
+        {
+            WalkerId = walker.Id,
+            CityId = city.Id
+        };
+        newWC.Id = walkerCities.Count > 0 ? walkerCities.Max(wc => wc.Id) + 1 : 1;
+        walkerCities.Add(newWC);
+    }
 });
 
 app.Run();
