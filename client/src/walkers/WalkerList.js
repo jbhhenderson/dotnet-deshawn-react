@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getCities, getWalkers, getWalkersByCity } from "../apiManager";
+import { getCities, getWalkers, getWalkersByCity, removeWalker } from "../apiManager";
 import { Walker } from "./Walker";
 
 export const WalkerList = () => 
@@ -30,6 +30,18 @@ export const WalkerList = () =>
             })
     };
 
+    const handleRemoveButton = (evt, walkerId) => {
+        evt.preventDefault()
+
+        removeWalker(walkerId)
+        .then(
+            getWalkers()
+            .then((data) => {
+                setWalkers(data)
+            })
+        )
+    }
+
     return <>
         <div>
             <label>
@@ -43,15 +55,21 @@ export const WalkerList = () =>
             </label>
         </div>
     {
-        cityIsSelected ? filteredWalkers.map(walker => <Walker key={`walker--${walker.id}`}
+        cityIsSelected ? filteredWalkers.map(walker =><>
+        <Walker key={`walker--${walker.id}`}
             id = {walker.id}
             name = {walker.name}
-            />)
+            />
+            <button onClick={(evt) => handleRemoveButton(evt, walker.id)}>Remove</button>
+            </>)
         
-        : walkers.map(walker => <Walker key={`walker--${walker.id}`}
+        : walkers.map(walker => <>
+            <Walker key={`walker--${walker.id}`}
             id = {walker.id}
             name = {walker.name}
-            />)
+            />
+            <button onClick={(evt) => handleRemoveButton(evt, walker.id)}>Remove</button>
+            </>)
         
     }
     </>
